@@ -74,7 +74,6 @@ public class GraphicsDisplay extends JPanel {
             if (((Double[])graphicsData.get(i))[1] < this.minY) {
                 this.minY = ((Double[])graphicsData.get(i))[1];
             }
-
             if (((Double[])graphicsData.get(i))[1] > this.maxY) {
                 this.maxY = ((Double[])graphicsData.get(i))[1];
             }
@@ -120,19 +119,16 @@ public class GraphicsDisplay extends JPanel {
         Double currentX = null;
         Double currentY = null;
         Iterator var5 = this.graphicsData.iterator();
-
         while(var5.hasNext()) {
             Double[] point = (Double[])var5.next();
             if (point[0] >= this.viewport[0][0] && point[1] <= this.viewport[0][1] && point[0] <= this.viewport[1][0] && point[1] >= this.viewport[1][1]) {
                 if (currentX != null && currentY != null) {
                     canvas.draw(new java.awt.geom.Line2D.Double(this.translateXYtoPoint(currentX, currentY), this.translateXYtoPoint(point[0], point[1])));
                 }
-
                 currentX = point[0];
                 currentY = point[1];
             }
         }
-
     }
 
     private void paintMarkers(Graphics2D canvas) {
@@ -153,7 +149,6 @@ public class GraphicsDisplay extends JPanel {
                 } else {
                     radius = 3;
                 }
-
                 java.awt.geom.Ellipse2D.Double marker = new java.awt.geom.Ellipse2D.Double();
                 Point2D center = this.translateXYtoPoint(point[0], point[1]);
                 Point2D corner = new java.awt.geom.Point2D.Double(center.getX() + (double)radius, center.getY() + (double)radius);
@@ -166,7 +161,6 @@ public class GraphicsDisplay extends JPanel {
                 }
             }
         }
-
         if (lastMarker != null) {
             canvas.setColor(Color.BLACK);
             canvas.setPaint(Color.BLACK);
@@ -210,7 +204,6 @@ public class GraphicsDisplay extends JPanel {
             bounds = this.labelsFont.getStringBounds(label, context);
             canvas.drawString(label, (float)(point.getX() + 5.0D), (float)(point.getY() - bounds.getHeight()));
         }
-
         if (this.selectedMarker >= 0) {
             point = this.translateXYtoPoint(((Double[])this.graphicsData.get(this.selectedMarker))[0], ((Double[])this.graphicsData.get(this.selectedMarker))[1]);
             label = "X=" + formatter.format(((Double[])this.graphicsData.get(this.selectedMarker))[0]) + ", Y=" + formatter.format(((Double[])this.graphicsData.get(this.selectedMarker))[1]);
@@ -218,26 +211,21 @@ public class GraphicsDisplay extends JPanel {
             canvas.setColor(Color.BLACK);
             canvas.drawString(label, (float)(point.getX() + 5.0D), (float)(point.getY() - bounds.getHeight()));
         }
-
     }
 
     private void paintGrid(Graphics2D canvas) {
         canvas.setStroke(this.gridStroke);
         canvas.setColor(Color.GRAY);
         double pos = this.viewport[0][0];
-
         double step;
         for(step = (this.viewport[1][0] - this.viewport[0][0]) / 10.0D; pos < this.viewport[1][0]; pos += step) {
             canvas.draw(new java.awt.geom.Line2D.Double(this.translateXYtoPoint(pos, this.viewport[0][1]), this.translateXYtoPoint(pos, this.viewport[1][1])));
         }
-
         canvas.draw(new java.awt.geom.Line2D.Double(this.translateXYtoPoint(this.viewport[1][0], this.viewport[0][1]), this.translateXYtoPoint(this.viewport[1][0], this.viewport[1][1])));
         pos = this.viewport[1][1];
-
         for(step = (this.viewport[0][1] - this.viewport[1][1]) / 10.0D; pos < this.viewport[0][1]; pos += step) {
             canvas.draw(new java.awt.geom.Line2D.Double(this.translateXYtoPoint(this.viewport[0][0], pos), this.translateXYtoPoint(this.viewport[1][0], pos)));
         }
-
         canvas.draw(new java.awt.geom.Line2D.Double(this.translateXYtoPoint(this.viewport[0][0], this.viewport[0][1]), this.translateXYtoPoint(this.viewport[1][0], this.viewport[0][1])));
     }
 
