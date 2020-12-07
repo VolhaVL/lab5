@@ -22,7 +22,6 @@ public class MainFrame extends JFrame {
     private JMenuItem resetGraphicsMenuItem;
     private GraphicsDisplay display = new GraphicsDisplay();
     private boolean fileLoaded = false;
-
     public MainFrame() {
         super("Обработка событий от мыши");
         this.setSize(700, 500);
@@ -40,7 +39,6 @@ public class MainFrame extends JFrame {
                     MainFrame.this.fileChooser = new JFileChooser();
                     MainFrame.this.fileChooser.setCurrentDirectory(new File("."));
                 }
-
                 MainFrame.this.fileChooser.showOpenDialog(MainFrame.this);
                 MainFrame.this.openGraphics(MainFrame.this.fileChooser.getSelectedFile());
             }

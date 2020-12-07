@@ -186,16 +186,13 @@ public class GraphicsDisplay extends JPanel {
         } else {
             labelYPos = this.viewport[1][1];
         }
-
         double labelXPos;
         if (this.viewport[0][0] < 0.0D && this.viewport[1][0] > 0.0D) {
             labelXPos = 0.0D;
         } else {
             labelXPos = this.viewport[0][0];
         }
-
         double pos = this.viewport[0][0];
-
         double step;
         java.awt.geom.Point2D.Double point;
         String label;
@@ -206,9 +203,7 @@ public class GraphicsDisplay extends JPanel {
             bounds = this.labelsFont.getStringBounds(label, context);
             canvas.drawString(label, (float)(point.getX() + 5.0D), (float)(point.getY() - bounds.getHeight()));
         }
-
         pos = this.viewport[1][1];
-
         for(step = (this.viewport[0][1] - this.viewport[1][1]) / 10.0D; pos < this.viewport[0][1]; pos += step) {
             point = this.translateXYtoPoint(labelXPos, pos);
             label = formatter.format(pos);
