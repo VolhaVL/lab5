@@ -53,7 +53,6 @@ public class MainFrame extends JFrame {
         this.resetGraphicsMenuItem.setEnabled(false);
         this.getContentPane().add(this.display, "Center");
     }
-
     protected void openGraphics(File selectedFile) {
         try {
             DataInputStream in = new DataInputStream(new FileInputStream(selectedFile));
@@ -74,7 +73,6 @@ public class MainFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Ошибка чтения координат точек из файла", "Ошибка загрузки данных", 2);
         }
     }
-
     public static void main(String[] args) {
         MainFrame frame = new MainFrame();
         frame.setDefaultCloseOperation(3);

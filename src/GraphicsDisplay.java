@@ -53,7 +53,6 @@ public class GraphicsDisplay extends JPanel {
         this.addMouseListener(new GraphicsDisplay.MouseHandler());
         this.addMouseMotionListener(new GraphicsDisplay.MouseMotionHandler());
     }
-
     public void displayGraphics(ArrayList<Double[]> graphicsData) {
         this.graphicsData = graphicsData;
         this.originalData = new ArrayList(graphicsData.size());
@@ -64,12 +63,10 @@ public class GraphicsDisplay extends JPanel {
             Double[] newPoint = new Double[]{new Double(point[0]), new Double(point[1])};
             this.originalData.add(newPoint);
         }
-
         this.minX = ((Double[])graphicsData.get(0))[0];
         this.maxX = ((Double[])graphicsData.get(graphicsData.size() - 1))[0];
         this.minY = ((Double[])graphicsData.get(0))[1];
         this.maxY = this.minY;
-
         for(int i = 1; i < graphicsData.size(); ++i) {
             if (((Double[])graphicsData.get(i))[1] < this.minY) {
                 this.minY = ((Double[])graphicsData.get(i))[1];
@@ -78,10 +75,8 @@ public class GraphicsDisplay extends JPanel {
                 this.maxY = ((Double[])graphicsData.get(i))[1];
             }
         }
-
         this.zoomToRegion(this.minX, this.maxY, this.maxX, this.minY);
     }
-
     public void zoomToRegion(double x1, double y1, double x2, double y2) {
         this.viewport[0][0] = x1;
         this.viewport[0][1] = y1;
@@ -89,7 +84,6 @@ public class GraphicsDisplay extends JPanel {
         this.viewport[1][1] = y2;
         this.repaint();
     }
-
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         this.scaleX = this.getSize().getWidth() / (this.viewport[1][0] - this.viewport[0][0]);
@@ -104,7 +98,6 @@ public class GraphicsDisplay extends JPanel {
             this.paintSelection(canvas);
         }
     }
-
     private void paintSelection(Graphics2D canvas) {
         if (this.scaleMode) {
             canvas.setStroke(this.selectionStroke);
@@ -112,7 +105,6 @@ public class GraphicsDisplay extends JPanel {
             canvas.draw(this.selectionRect);
         }
     }
-
     private void paintGraphics(Graphics2D canvas) {
         canvas.setStroke(this.markerStroke);
         canvas.setColor(Color.ORANGE);
@@ -130,7 +122,6 @@ public class GraphicsDisplay extends JPanel {
             }
         }
     }
-
     private void paintMarkers(Graphics2D canvas) {
         canvas.setStroke(this.markerStroke);
         canvas.setColor(Color.ORANGE);
@@ -138,7 +129,6 @@ public class GraphicsDisplay extends JPanel {
         java.awt.geom.Ellipse2D.Double lastMarker = null;
         int i = -1;
         Iterator var5 = this.graphicsData.iterator();
-
         while(var5.hasNext()) {
             Double[] point = (Double[])var5.next();
             ++i;
@@ -167,9 +157,7 @@ public class GraphicsDisplay extends JPanel {
             canvas.draw(lastMarker);
             canvas.fill(lastMarker);
         }
-
     }
-
     private void paintLabels(Graphics2D canvas) {
         canvas.setColor(Color.BLACK);
         canvas.setFont(this.labelsFont);
@@ -212,7 +200,6 @@ public class GraphicsDisplay extends JPanel {
             canvas.drawString(label, (float)(point.getX() + 5.0D), (float)(point.getY() - bounds.getHeight()));
         }
     }
-
     private void paintGrid(Graphics2D canvas) {
         canvas.setStroke(this.gridStroke);
         canvas.setColor(Color.GRAY);
@@ -228,7 +215,6 @@ public class GraphicsDisplay extends JPanel {
         }
         canvas.draw(new java.awt.geom.Line2D.Double(this.translateXYtoPoint(this.viewport[0][0], this.viewport[0][1]), this.translateXYtoPoint(this.viewport[1][0], this.viewport[0][1])));
     }
-
     private void paintAxis(Graphics2D canvas) {
         canvas.setStroke(this.axisStroke);
         canvas.setColor(Color.BLACK);
@@ -244,7 +230,6 @@ public class GraphicsDisplay extends JPanel {
             labelPos = this.translateXYtoPoint(0.0D, this.viewport[0][1]);
             canvas.drawString("y", (float)labelPos.x + 10.0F, (float)(labelPos.y + bounds.getHeight() / 2.0D));
         }
-
         if (this.viewport[1][1] <= 0.0D && this.viewport[0][1] >= 0.0D) {
             canvas.draw(new java.awt.geom.Line2D.Double(this.translateXYtoPoint(this.viewport[0][0], 0.0D), this.translateXYtoPoint(this.viewport[1][0], 0.0D)));
             canvas.draw(new java.awt.geom.Line2D.Double(this.translateXYtoPoint(this.viewport[1][0] - (this.viewport[1][0] - this.viewport[0][0]) * 0.01D, (this.viewport[0][1] - this.viewport[1][1]) * 0.005D), this.translateXYtoPoint(this.viewport[1][0], 0.0D)));
@@ -253,25 +238,20 @@ public class GraphicsDisplay extends JPanel {
             labelPos = this.translateXYtoPoint(this.viewport[1][0], 0.0D);
             canvas.drawString("x", (float)(labelPos.x - bounds.getWidth() - 10.0D), (float)(labelPos.y - bounds.getHeight() / 2.0D));
         }
-
     }
-
     protected java.awt.geom.Point2D.Double translateXYtoPoint(double x, double y) {
         double deltaX = x - this.viewport[0][0];
         double deltaY = this.viewport[0][1] - y;
         return new java.awt.geom.Point2D.Double(deltaX * this.scaleX, deltaY * this.scaleY);
     }
-
     protected double[] translatePointToXY(int x, int y) {
         return new double[]{this.viewport[0][0] + (double)x / this.scaleX, this.viewport[0][1] - (double)y / this.scaleY};
     }
-
     protected int findSelectedPoint(int x, int y) {
         if (this.graphicsData == null) {
             return -1;
         } else {
             int pos = 0;
-
             for(Iterator var5 = this.graphicsData.iterator(); var5.hasNext(); ++pos) {
                 Double[] point = (Double[])var5.next();
                 java.awt.geom.Point2D.Double screenPoint = this.translateXYtoPoint(point[0], point[1]);
@@ -280,11 +260,9 @@ public class GraphicsDisplay extends JPanel {
                     return pos;
                 }
             }
-
             return -1;
         }
     }
-
     public void reset() {
         this.displayGraphics(this.originalData);
     }
@@ -292,7 +270,6 @@ public class GraphicsDisplay extends JPanel {
     public class MouseHandler extends MouseAdapter {
         public MouseHandler() {
         }
-
         public void mouseClicked(MouseEvent ev) {
             if (ev.getButton() == 3) {
                 if (GraphicsDisplay.this.undoHistory.size() > 0) {
@@ -301,12 +278,9 @@ public class GraphicsDisplay extends JPanel {
                 } else {
                     GraphicsDisplay.this.zoomToRegion(GraphicsDisplay.this.minX, GraphicsDisplay.this.maxY, GraphicsDisplay.this.maxX, GraphicsDisplay.this.minY);
                 }
-
                 GraphicsDisplay.this.repaint();
             }
-
         }
-
         public void mousePressed(MouseEvent ev) {
             if (ev.getButton() == 1) {
                 GraphicsDisplay.this.selectedMarker = GraphicsDisplay.this.findSelectedPoint(ev.getX(), ev.getY());
@@ -322,7 +296,6 @@ public class GraphicsDisplay extends JPanel {
 
             }
         }
-
         public void mouseReleased(MouseEvent ev) {
             if (ev.getButton() == 1) {
                 GraphicsDisplay.this.setCursor(Cursor.getPredefinedCursor(0));
@@ -336,15 +309,12 @@ public class GraphicsDisplay extends JPanel {
                     GraphicsDisplay.this.zoomToRegion(GraphicsDisplay.this.originalPoint[0], GraphicsDisplay.this.originalPoint[1], finalPoint[0], finalPoint[1]);
                     GraphicsDisplay.this.repaint();
                 }
-
             }
         }
     }
-
     public class MouseMotionHandler implements MouseMotionListener {
         public MouseMotionHandler() {
         }
-
         public void mouseMoved(MouseEvent ev) {
             GraphicsDisplay.this.selectedMarker = GraphicsDisplay.this.findSelectedPoint(ev.getX(), ev.getY());
             if (GraphicsDisplay.this.selectedMarker >= 0) {
@@ -352,10 +322,8 @@ public class GraphicsDisplay extends JPanel {
             } else {
                 GraphicsDisplay.this.setCursor(Cursor.getPredefinedCursor(0));
             }
-
             GraphicsDisplay.this.repaint();
         }
-
         public void mouseDragged(MouseEvent ev) {
             if (GraphicsDisplay.this.changeMode) {
                 double[] currentPoint = GraphicsDisplay.this.translatePointToXY(ev.getX(), ev.getY());
@@ -363,11 +331,9 @@ public class GraphicsDisplay extends JPanel {
                 if (newY > GraphicsDisplay.this.viewport[0][1]) {
                     newY = GraphicsDisplay.this.viewport[0][1];
                 }
-
                 if (newY < GraphicsDisplay.this.viewport[1][1]) {
                     newY = GraphicsDisplay.this.viewport[1][1];
                 }
-
                 ((Double[])GraphicsDisplay.this.graphicsData.get(GraphicsDisplay.this.selectedMarker))[1] = newY;
                 GraphicsDisplay.this.repaint();
             } else {
@@ -375,16 +341,13 @@ public class GraphicsDisplay extends JPanel {
                 if (width < 5.0D) {
                     width = 5.0D;
                 }
-
                 double height = (double)ev.getY() - GraphicsDisplay.this.selectionRect.getY();
                 if (height < 5.0D) {
                     height = 5.0D;
                 }
-
                 GraphicsDisplay.this.selectionRect.setFrame(GraphicsDisplay.this.selectionRect.getX(), GraphicsDisplay.this.selectionRect.getY(), width, height);
                 GraphicsDisplay.this.repaint();
             }
-
         }
     }
 }
